@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="ru" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=yes">
+  <title>GUS • Правила форума</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🛡️</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+      --radius-xl: 2.5rem; --radius-lg: 2rem; --radius-md: 1.5rem; --radius-sm: 1rem;
+      --card-blur: 12px; --hover-blur-intensity: 2px;
+      --transition: 0.4s cubic-bezier(0.23, 0.1, 0.23, 1.1);
+    }
+    [data-theme="dark"] {
+      --bg-primary: #000000; --bg-secondary: #0a0a0a;
+      --text-primary: #FFFFFF; --text-secondary: #b0b0b0; --text-muted: #6b6b6b;
+      --accent: #4da8da; --accent-soft: #1e5a7a;
+      --nav-bg: rgba(0, 0, 0, 0.92);
+      --glass-bg: rgba(255, 255, 255, 0.03);
+      --glass-border: rgba(255, 255, 255, 0.1);
+      --card-bg: rgba(255, 255, 255, 0.04);
+      --card-hover-border: rgba(77, 168, 218, 0.65);
+      --hero-gradient: linear-gradient(135deg, #4da8da 0%, #1e5a7a 100%);
+      --accent-glow: rgba(77, 168, 218, 0.35);
+      --success: #10b981;
+    }
+
+    html { scroll-behavior: smooth; background: var(--bg-primary); }
+    body {
+      font-family: var(--font-sans);
+      background: transparent; color: var(--text-primary);
+      line-height: 1.6; overflow-x: hidden; font-weight: 400;
+      position: relative; min-height: 100vh;
+    }
+
+    .bg-glow {
+      position: fixed; top: -50%; left: -50%; width: 200%; height: 200%;
+      pointer-events: none; z-index: -1;
+      background: radial-gradient(circle at 30% 40%, #001e3c 0%, #000000 70%),
+                  radial-gradient(circle at 80% 80%, rgba(30, 70, 100, 0.25) 0%, transparent 50%);
+      animation: bgPulse 18s ease-in-out infinite alternate;
+    }
+    @keyframes bgPulse { 0% { transform: scale(1) rotate(0deg); opacity: 0.65; } 100% { transform: scale(1.08) rotate(4deg); opacity: 0.9; } }
+
+    ::-webkit-scrollbar { width: 7px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--accent-soft); border-radius: 20px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+
+    .top-nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 120;
+      background: var(--nav-bg); backdrop-filter: blur(35px);
+      border-bottom: 1px solid var(--glass-border);
+      padding: 0 2rem; height: 70px; display: flex;
+      align-items: center; justify-content: space-between;
+      box-shadow: 0 10px 35px rgba(0,0,0,0.4);
+      animation: slideDown 0.6s ease-out;
+    }
+    @keyframes slideDown {
+      from { transform: translateY(-100%); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+    .logo {
+      font-weight: 800; font-size: 2.2rem;
+      background: var(--hero-gradient); -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent; background-clip: text;
+      letter-spacing: -0.5px; display: flex; align-items: center; gap: 0.3rem;
+      animation: logoPop 0.7s ease-out 0.2s both;
+    }
+    @keyframes logoPop {
+      from { transform: scale(0.5); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+    .nav-links { display: flex; gap: 1.2rem; align-items: center; flex-wrap: wrap; }
+    .outline-btn {
+      background: transparent; border: 1.5px solid var(--accent);
+      color: var(--accent); padding: 0.6rem 1.6rem;
+      border-radius: 3rem; font-weight: 600; text-decoration: none;
+      transition: 0.3s; font-size: 0.9rem; display: flex; align-items: center; gap: 0.4rem;
+    }
+    .outline-btn:hover { background: rgba(77,168,218,0.15); box-shadow: 0 0 25px var(--accent-glow); transform: translateY(-2px); }
+    .primary-btn {
+      background: var(--hero-gradient); border: none; color: white;
+      padding: 0.6rem 1.6rem; border-radius: 3rem; font-weight: 600;
+      text-decoration: none; transition: 0.3s; font-size: 0.9rem; display: flex; align-items: center; gap: 0.4rem;
+    }
+    .primary-btn:hover { box-shadow: 0 8px 25px var(--accent-glow); transform: translateY(-2px); }
+
+    .main-content { max-width: 1000px; margin: 0 auto; padding: 6rem 2rem 3rem; }
+
+    .hero-card {
+      background: var(--card-bg); backdrop-filter: blur(var(--card-blur));
+      border: 1px solid var(--glass-border); border-radius: 2.5rem;
+      padding: 3rem 2.5rem; margin-bottom: 3rem; text-align: center;
+      box-shadow: 0 25px 45px -15px rgba(0,0,0,0.5);
+      animation: fadeInUp 0.8s ease-out;
+    }
+    @keyframes fadeInUp {
+      from { transform: translateY(50px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+    .hero-card h1 {
+      font-size: clamp(2.2rem, 6vw, 3.5rem); font-weight: 800;
+      background: linear-gradient(to right, #fff, var(--accent));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text; margin-bottom: 1rem;
+    }
+    .hero-card .sub {
+      color: var(--text-secondary); font-size: 1.2rem; max-width: 700px; margin: 0 auto;
+    }
+
+    /* Шкала наказаний */
+    .penalty-scale {
+      background: var(--card-bg); backdrop-filter: blur(var(--card-blur));
+      border: 1px solid var(--glass-border); border-radius: 2rem;
+      padding: 2rem 2.2rem; margin-bottom: 2.5rem;
+    }
+    .penalty-scale h2 {
+      font-size: 1.8rem; font-weight: 700; color: var(--accent);
+      margin-bottom: 1.5rem; text-align: center;
+    }
+    .scale-track {
+      display: flex; align-items: stretch; gap: 0; border-radius: 2rem;
+      overflow: hidden; height: 100px; margin-bottom: 1rem;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.4);
+    }
+    .scale-step {
+      flex: 1; display: flex; flex-direction: column; align-items: center;
+      justify-content: center; text-align: center; padding: 0.5rem;
+      transition: 0.3s; cursor: default; position: relative;
+    }
+    .scale-step:hover { filter: brightness(1.3); transform: scaleY(1.08); z-index: 2; }
+    .scale-step:nth-child(1) { background: #1e5a7a; }
+    .scale-step:nth-child(2) { background: #256b8a; }
+    .scale-step:nth-child(3) { background: #3a7a9a; }
+    .scale-step:nth-child(4) { background: #c47a2a; }
+    .scale-step:nth-child(5) { background: #c4582a; }
+    .scale-step:nth-child(6) { background: #c43830; }
+    .scale-step:nth-child(7) { background: #b01020; }
+    .step-num { font-size: 1.8rem; font-weight: 800; color: #fff; text-shadow: 0 2px 6px rgba(0,0,0,0.5); }
+    .step-label { font-size: 0.8rem; color: rgba(255,255,255,0.85); font-weight: 600; margin-top: 0.2rem; }
+
+    .scale-note {
+      color: var(--text-muted); text-align: center; font-size: 0.95rem;
+      line-height: 1.6;
+    }
+    .scale-note .highlight {
+      color: #6ee7b7; font-weight: 600;
+    }
+
+    /* Принципы */
+    .principles {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.2rem; margin: 2rem 0;
+    }
+    .principle-card {
+      background: var(--card-bg); backdrop-filter: blur(var(--card-blur));
+      border: 1px solid var(--glass-border); border-radius: 1.5rem;
+      padding: 1.5rem; text-align: center; transition: 0.3s;
+    }
+    .principle-card:hover { border-color: var(--card-hover-border); transform: translateY(-4px); }
+    .principle-icon { font-size: 2.5rem; margin-bottom: 0.5rem; }
+    .principle-title { font-size: 1.2rem; font-weight: 700; color: var(--accent); margin-bottom: 0.5rem; }
+    .principle-desc { color: var(--text-secondary); font-size: 0.9rem; line-height: 1.5; }
+
+    /* Сворачиваемый список */
+    .collapsible {
+      background: var(--card-bg); backdrop-filter: blur(var(--card-blur));
+      border: 1px solid var(--glass-border); border-radius: 2rem;
+      margin-bottom: 1.5rem; overflow: hidden;
+    }
+    .collapsible-header {
+      padding: 1.3rem 2rem; display: flex; align-items: center;
+      justify-content: space-between; cursor: pointer; transition: 0.3s;
+      user-select: none;
+    }
+    .collapsible-header:hover { background: rgba(77,168,218,0.08); }
+    .collapsible-header h3 { font-size: 1.3rem; font-weight: 700; color: var(--accent); }
+    .collapse-icon { font-size: 1.5rem; transition: 0.3s; color: var(--accent); }
+    .collapsible.open .collapse-icon { transform: rotate(180deg); }
+    .collapsible-body {
+      max-height: 0; overflow: hidden; transition: max-height 0.5s cubic-bezier(0.23, 0.1, 0.23, 1.0);
+      padding: 0 2rem;
+    }
+    .collapsible.open .collapsible-body {
+      max-height: 3000px; padding: 0 2rem 1.5rem;
+    }
+
+    .rules-container { display: flex; flex-direction: column; gap: 0.8rem; }
+
+    .rule-card {
+      background: rgba(255,255,255,0.02); border: 1px solid var(--glass-border);
+      border-radius: 1.5rem; padding: 1.3rem 1.8rem; transition: all 0.3s ease;
+      display: flex; align-items: flex-start; gap: 1rem;
+    }
+    .rule-card:hover { border-color: var(--card-hover-border); box-shadow: 0 12px 28px -12px var(--accent-glow); }
+    .rule-icon { font-size: 1.8rem; min-width: 42px; text-align: center; }
+    .rule-content { flex: 1; }
+    .rule-title { font-size: 1.15rem; font-weight: 700; color: var(--accent); margin-bottom: 0.3rem; }
+    .rule-desc { color: var(--text-secondary); font-size: 0.95rem; line-height: 1.5; }
+
+    /* Анимационные классы */
+    .anim-fade-up {
+      opacity: 0; transform: translateY(40px);
+      transition: opacity 0.7s ease-out, transform 0.7s ease-out;
+    }
+    .anim-fade-up.visible {
+      opacity: 1; transform: translateY(0);
+    }
+    .anim-fade-left {
+      opacity: 0; transform: translateX(-30px);
+      transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    }
+    .anim-fade-left.visible {
+      opacity: 1; transform: translateX(0);
+    }
+    .anim-scale {
+      opacity: 0; transform: scale(0.9);
+      transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+    }
+    .anim-scale.visible {
+      opacity: 1; transform: scale(1);
+    }
+
+    /* Администраторы */
+    #admins { scroll-margin-top: 100px; }
+    .admins-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem; margin-top: 2rem;
+    }
+    .admin-card {
+      background: var(--card-bg); backdrop-filter: blur(var(--card-blur));
+      border: 1px solid var(--glass-border); border-radius: 2rem;
+      padding: 2rem; text-align: center; transition: 0.3s;
+    }
+    .admin-card:hover { border-color: var(--card-hover-border); box-shadow: 0 15px 30px -10px var(--accent-glow); transform: translateY(-5px); }
+    .admin-avatar { font-size: 3.5rem; margin-bottom: 0.8rem; }
+    .admin-name { font-size: 1.4rem; font-weight: 700; color: var(--text-primary); }
+    .admin-role { font-size: 0.95rem; color: var(--accent); font-weight: 600; margin: 0.4rem 0 0.6rem; }
+    .admin-desc { color: var(--text-secondary); font-size: 0.9rem; line-height: 1.5; }
+    .admin-tg {
+      display: inline-block; margin-top: 1rem; color: var(--accent);
+      text-decoration: none; font-weight: 600; font-size: 0.9rem;
+      background: rgba(77,168,218,0.1); padding: 0.4rem 1.2rem; border-radius: 2rem;
+      transition: 0.3s;
+    }
+    .admin-tg:hover { background: rgba(77,168,218,0.25); box-shadow: 0 0 20px var(--accent-glow); }
+
+    .bottom-actions {
+      display: flex; gap: 1.2rem; justify-content: center; flex-wrap: wrap;
+      margin-top: 2.5rem;
+    }
+    .bottom-actions .primary-btn, .bottom-actions .outline-btn {
+      padding: 0.9rem 2.2rem; font-size: 1rem;
+    }
+
+    .footer {
+      text-align: center; padding: 3rem 2rem; color: var(--text-muted);
+      border-top: 1px solid var(--glass-border); margin-top: 3rem;
+      backdrop-filter: blur(10px); font-size: 0.95rem;
+    }
+    .footer a { color: var(--accent); text-decoration: none; font-weight: 500; }
+    .footer a:hover { text-decoration: underline; }
+
+    /* Эффект пульсации для кнопок */
+    @keyframes gentlePulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(77, 168, 218, 0.4); }
+      50% { box-shadow: 0 0 0 12px rgba(77, 168, 218, 0); }
+    }
+    .bottom-actions .primary-btn {
+      animation: gentlePulse 2.5s infinite;
+    }
+
+    @media (max-width: 650px) {
+      .top-nav { padding: 0 1rem; gap: 0.8rem; }
+      .nav-links { gap: 0.6rem; }
+      .outline-btn, .primary-btn { padding: 0.5rem 1rem; font-size: 0.8rem; }
+      .scale-track { height: 70px; }
+      .step-num { font-size: 1.3rem; }
+      .step-label { font-size: 0.7rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-glow"></div>
+
+  <header class="top-nav">
+    <div class="logo"><span>🛡️</span> GUS</div>
+    <div class="nav-links">
+      <a href="https://greatuserteam.github.io/GUSite/#hero" target="_blank" class="outline-btn">
+        <span>🏠</span> Основной сайт
+      </a>
+      <a href="https://t.me/GreatUserSystemForum" target="_blank" class="primary-btn">
+        <span>💬</span> Форум
+      </a>
+    </div>
+  </header>
+
+  <div class="main-content">
+    <div class="hero-card anim-fade-up">
+      <h1>Правила форума GUS</h1>
+      <p class="sub">Уважайте сообщество и соблюдайте конструктивный диалог. Все нарушения проходят по единой прогрессивной шкале наказаний.</p>
+    </div>
+
+    <!-- Шкала наказаний -->
+    <div class="penalty-scale anim-fade-up">
+      <h2>📋 Шкала наказаний</h2>
+      <div class="scale-track">
+        <div class="scale-step">
+          <div class="step-num">1</div>
+          <div class="step-label">Предупреждение</div>
+        </div>
+        <div class="scale-step">
+          <div class="step-num">2</div>
+          <div class="step-label">Мут 1 час</div>
+        </div>
+        <div class="scale-step">
+          <div class="step-num">3</div>
+          <div class="step-label">Мут 24 часа</div>
+        </div>
+        <div class="scale-step">
+          <div class="step-num">4</div>
+          <div class="step-label">Мут 3 дня</div>
+        </div>
+        <div class="scale-step">
+          <div class="step-num">5</div>
+          <div class="step-label">Мут 7 дней</div>
+        </div>
+        <div class="scale-step">
+          <div class="step-num">6</div>
+          <div class="step-label">Мут 30 дней</div>
+        </div>
+        <div class="scale-step">
+          <div class="step-num">7</div>
+          <div class="step-label">БАН навсегда</div>
+        </div>
+      </div>
+      <p class="scale-note">Каждое следующее нарушение любого правила продвигает вас на один шаг по шкале. Прогресс не сбрасывается. <span class="highlight">Однако за примерное поведение и конструктивный вклад в сообщество администрация может откатить вас на шаг назад — решение принимается исключительно на усмотрение администраторов.</span></p>
+    </div>
+
+    <!-- Важные принципы -->
+    <div class="principles">
+      <div class="principle-card anim-scale">
+        <div class="principle-icon">⚖️</div>
+        <div class="principle-title">Решение модератора</div>
+        <div class="principle-desc">Обсуждению не подлежит. Споры с администрацией ни к чему хорошему не приведут — решение окончательное и пересмотру не подлежит.</div>
+      </div>
+      <div class="principle-card anim-scale">
+        <div class="principle-icon">😤</div>
+        <div class="principle-title">Фактор «Задолбал»</div>
+        <div class="principle-desc">Если ты систематически раздражаешь большую часть чата или администрацию своим поведением — можешь улететь в бан, даже если формально не нарушил ни один пункт. Не будь токсичным.</div>
+      </div>
+      <div class="principle-card anim-scale">
+        <div class="principle-icon">👁️</div>
+        <div class="principle-title">Удаление не спасёт</div>
+        <div class="principle-desc">Написал дичь и сразу удалил? Не прокатит. Администрация и участники с модами видят удалённые сообщения. Наказание будет выдано по факту написания, а не по факту наличия.</div>
+      </div>
+    </div>
+
+    <!-- Сворачиваемый список правил (по умолчанию свёрнут) -->
+    <div class="collapsible anim-fade-up" id="rulesCollapsible">
+      <div class="collapsible-header" onclick="toggleCollapsible('rulesCollapsible')">
+        <h3>📜 Список запрещённого (по сути надо нормально себя вести)</h3>
+        <span class="collapse-icon">▼</span>
+      </div>
+      <div class="collapsible-body">
+        <div class="rules-container">
+          
+          <div class="rule-card anim-fade-left">
+            <div class="rule-icon">🔞</div>
+            <div class="rule-content">
+              <div class="rule-title">Шок-контент, 18+, насилие</div>
+              <div class="rule-desc">Расчленёнка, детская/зоо порнография, любая жесть, откровенные материалы и ссылки на подобный контент строго запрещены. Форум ориентирован на широкую аудиторию.</div>
+            </div>
+          </div>
+
+          <div class="rule-card anim-fade-left">
+            <div class="rule-icon">📵</div>
+            <div class="rule-content">
+              <div class="rule-title">Нарушение законов РФ и Telegram ToS</div>
+              <div class="rule-desc">Любой контент, нарушающий законы Российской Федерации или правила платформы Telegram, категорически запрещён.</div>
+            </div>
+          </div>
+
+          <div class="rule-card anim-fade-left">
+            <div class="rule-icon">🎭</div>
+            <div class="rule-content">
+              <div class="rule-title">Саботаж и фейки</div>
+              <div class="rule-desc">Фейк-боты, выдача себя за администратора, мультиаккаунты для обхода бана. Любые попытки дестабилизировать работу форума.</div>
+            </div>
+          </div>
+
+          <div class="rule-card anim-fade-left">
+            <div class="rule-icon">🤝</div>
+            <div class="rule-content">
+              <div class="rule-title">Агрессия, токсичность, оскорбления</div>
+              <div class="rule-desc">Травля, нацизм, дискриминация, серьёзные угрозы, оскорбления участников, их родственников, друзей или близких. Любые формы харассмента и преследования.</div>
+            </div>
+          </div>
+
+          <div class="rule-card anim-fade-left">
+            <div class="rule-icon">🗣️</div>
+            <div class="rule-content">
+              <div class="rule-title">Политика и срачи</div>
+              <div class="rule-desc">Любые политические темы, намеренные провокации, разжигание конфликтов на почве идеологии. Форуму это не нужно.</div>
+            </div>
+          </div>
+
+          <div class="rule-card anim-fade-left">
+            <div class="rule-icon">🕵️</div>
+            <div class="rule-content">
+              <div class="rule-title">Деанон и докс</div>
+              <div class="rule-desc">Слив личных данных, фото или переписок без согласия — даже фейковых, даже «в шутку». Неприкосновенность личной жизни превыше всего.</div>
+            </div>
+          </div>
+
+          <div class="rule-card anim-fade-left">
+            <div class="rule-icon">🛡️</div>
+            <div class="rule-content">
+              <div class="rule-title">Выпрашивание привилегий</div>
+              <div class="rule-desc">Выпрашивание админки, модератора, особых прав или других привилегий. Просьбы в личку администрации тоже считаются.</div>
+            </div>
+          </div>
+
+          <div class="rule-card anim-fade-left">
+            <div class="rule-icon">📰</div>
+            <div class="rule-content">
+              <div class="rule-title">Дезинформация и рейды</div>
+              <div class="rule-desc">Намеренное распространение фейков о проекте/участниках. Организация или призывы к рейдам на другие сообщества.</div>
+            </div>
+          </div>
+
+          <div class="rule-card anim-fade-left">
+            <div class="rule-icon">📢</div>
+            <div class="rule-content">
+              <div class="rule-title">Спам, реклама, фишинг</div>
+              <div class="rule-desc">Сторонняя реклама, инвайты, скам-ссылки, фишинг, рекламные боты. Даже фейковая рофло-реклама запрещена.</div>
+            </div>
+          </div>
+
+          <div class="rule-card anim-fade-left">
+            <div class="rule-icon">🔤</div>
+            <div class="rule-content">
+              <div class="rule-title">Флуд и злоупотребление капсом</div>
+              <div class="rule-desc">Спам стикерами/гифками, бессмысленные сообщения. Капс разрешён только для выражения эмоций и в разумных пределах.</div>
+            </div>
+          </div>
+
+          <div class="rule-card anim-fade-left">
+            <div class="rule-icon">📜</div>
+            <div class="rule-content">
+              <div class="rule-title">Простыни и логи</div>
+              <div class="rule-desc">Любые длинные сообщения, логи ошибок или фрагменты кода отправляй только через свёрнутую цитату. Уважай чужой скролл.</div>
+            </div>
+          </div>
+
+          <div class="rule-card anim-fade-left">
+            <div class="rule-icon">🤖</div>
+            <div class="rule-content">
+              <div class="rule-title">Абуз модулей и плагинов</div>
+              <div class="rule-desc">Запрещено настраивать или использовать пользовательские модули/плагины так, чтобы нарушать правила выше. Пример: спамить триггерным словом через автоответчик.</div>
+            </div>
+          </div>
+
+          <div class="rule-card anim-fade-left">
+            <div class="rule-icon">💬</div>
+            <div class="rule-content">
+              <div class="rule-title">Неконструктивная критика ОС</div>
+              <div class="rule-desc">Сообщения в стиле «ваша система — ерунда», троллинг без конкретики, токсичное высмеивание. Аргументированная критика приветствуется.</div>
+            </div>
+          </div>
+
+          <div class="rule-card anim-fade-left">
+            <div class="rule-icon">📝</div>
+            <div class="rule-content">
+              <div class="rule-title">Оформление сообщений</div>
+              <div class="rule-desc">Старайтесь писать разборчиво, использовать знаки препинания. Заголовки тем должны отражать суть. Злоупотребление жирным/курсивом/зачёркнутым без причины не приветствуется.</div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- Администрация -->
+    <div id="admins">
+      <div style="background: var(--card-bg); backdrop-filter: blur(var(--card-blur)); border: 1px solid var(--glass-border); border-radius: 2rem; padding: 2.2rem; margin-bottom: 2rem;" class="anim-fade-up">
+        <h2 style="font-size: 1.8rem; font-weight: 700; color: var(--accent); text-align: center; margin-bottom: 0.5rem;">👑 Администрация форума</h2>
+        <p style="color: var(--text-secondary); text-align: center; margin-bottom: 1.5rem;">По всем вопросам обращайтесь к администраторам в личные сообщения.</p>
+        <div class="admins-grid">
+          <div class="admin-card anim-scale">
+            <div class="admin-avatar">👑</div>
+            <div class="admin-name">tigrankrapivin</div>
+            <div class="admin-role">Владелец форума • Создатель идеи GUS</div>
+            <div class="admin-desc">Главный администратор. Основатель и идеолог всего проекта Great User System. Принимает окончательные решения по развитию форума и системы.</div>
+            <a href="https://t.me/tigrankrapivin" target="_blank" class="admin-tg">@tigrankrapivin</a>
+          </div>
+          <div class="admin-card anim-scale">
+            <div class="admin-avatar">🛡️</div>
+            <div class="admin-name">Depression_off1cial</div>
+            <div class="admin-role">Админ-модератор • Кыр</div>
+            <div class="admin-desc">Администратор и модератор форума. Следит за порядком, рассматривает жалобы участников, выносит предупреждения и блокировки согласно правилам.</div>
+            <a href="https://t.me/Depression_off1cial" target="_blank" class="admin-tg">@Depression_off1cial</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Кнопки внизу -->
+    <div class="bottom-actions anim-fade-up">
+      <a href="https://t.me/GreatUserSystemForum" target="_blank" class="primary-btn">
+        <span>💬</span> Перейти на форум
+      </a>
+      <a href="#admins" class="outline-btn">
+        <span>👑</span> Администрация
+      </a>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <p><strong>GUS</strong> — Great User System. Правила форума · <a href="https://greatuserteam.github.io/GUSite/#hero" target="_blank">Основной сайт</a> · <a href="https://t.me/GreatUserSystemForum" target="_blank">Telegram Forum</a></p>
+    <p style="margin-top: 0.5rem;">Оптимизация · Кастомизация · Свобода</p>
+  </footer>
+
+  <script>
+    function toggleCollapsible(id) {
+      const el = document.getElementById(id);
+      el.classList.toggle('open');
+    }
+
+    (function() {
+      console.log('GUS Forum Rules · защищено сообществом');
+      
+      // Функция для повторной активации анимаций
+      function setupAnimations() {
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('visible');
+            } else {
+              // Убираем класс, чтобы анимация срабатывала повторно при скролле
+              entry.target.classList.remove('visible');
+            }
+          });
+        }, { threshold: 0.15, rootMargin: '0px 0px -30px 0px' });
+        
+        document.querySelectorAll('.anim-fade-up, .anim-fade-left, .anim-scale').forEach(el => {
+          observer.observe(el);
+        });
+      }
+
+      setupAnimations();
+
+      // Плавный скролл для кнопки "Администрация"
+      document.querySelector('a[href="#admins"]').addEventListener('click', function(e) {
+        e.preventDefault();
+        document.getElementById('admins').scrollIntoView({ behavior: 'smooth' });
+      });
+    })();
+  </script>
+</body>
+</html>
